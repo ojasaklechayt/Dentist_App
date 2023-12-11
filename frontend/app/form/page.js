@@ -19,13 +19,34 @@ const FormPage = () => {
         });
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const { location, clinic, dentist, service } = formState;
         const formattedLocation = location.replace(/\s/g, '-');
         const formattedClinic = clinic.replace(/\s/g, '-');
         const formattedDentist = dentist.replace(/\s/g, '-');
         const formattedService = service.replace(/\s/g, '-');
+
+        const response = await fetch(`${process.env.BACKEND_BASE_URL}/submissions`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                location: formattedLocation,
+                clinic: formattedClinic,
+                dentist: formattedDentist,
+                service: formattedService,
+            }),
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+        } else {
+            console.error('Error:', response.statusText);
+        }
+
         router.push(`/${formattedLocation}/${formattedClinic}/${formattedDentist}/${formattedService}`);
     };
 
