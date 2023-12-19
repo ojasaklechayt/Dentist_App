@@ -21,11 +21,14 @@ const FormPage = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
         const { location, clinic, dentist, service } = formState;
-        const formattedLocation = location.replace(/\s/g, '-');
-        const formattedClinic = clinic.replace(/\s/g, '-');
-        const formattedDentist = dentist.replace(/\s/g, '-');
-        const formattedService = service.replace(/\s/g, '-');
+
+        // Add your formatting logic here
+        const formattedLocation = location.trim().replace(/\s+/g, '-').toLowerCase();
+        const formattedClinic = clinic.trim().replace(/\s+/g, '-').toLowerCase();
+        const formattedDentist = dentist.trim().replace(/\s+/g, '-').toLowerCase();
+        const formattedService = service.trim().replace(/\s+/g, '-').toLowerCase();
 
         const response = await fetch(`${process.env.BACKEND_BASE_URL}/submissions`, {
             method: 'POST',
@@ -51,25 +54,56 @@ const FormPage = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col max-w-md mx-auto">
-            <label className="mb-2">
-                Location:
-                <input type="text" name="location" onChange={handleChange} className="w-full px-2 py-1 border rounded text-black" />
-            </label>
-            <label className="mb-2">
-                Clinic:
-                <input type="text" name="clinic" onChange={handleChange} className="w-full px-2 py-1 border rounded text-black" />
-            </label>
-            <label className="mb-2">
-                Dentist:
-                <input type="text" name="dentist" onChange={handleChange} className="w-full px-2 py-1 border rounded text-black" />
-            </label>
-            <label className="mb-2">
-                Service:
-                <input type="text" name="service" onChange={handleChange} className="w-full px-2 py-1 border rounded text-black" />
-            </label>
-            <button type="submit" className="px-4 py-2 mt-2 bg-blue-500 text-white rounded cursor-pointer">Submit</button>
-        </form>
+        <div className="h-screen flex items-center justify-center bg-gray-200">
+            <form onSubmit={handleSubmit} className="max-w-md w-full p-8 bg-white shadow-md rounded-md text-black">
+                <label className="block mb-4">
+                    <span className="text-gray-700">Location:</span>
+                    <input
+                        type="text"
+                        name="location"
+                        placeholder="Enter your location"
+                        onChange={handleChange}
+                        className="w-full mt-2 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                    />
+                </label>
+                <label className="block mb-4">
+                    <span className="text-gray-700">Clinic:</span>
+                    <input
+                        type="text"
+                        name="clinic"
+                        placeholder="Enter clinic name"
+                        onChange={handleChange}
+                        className="w-full mt-2 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                    />
+                </label>
+                <label className="block mb-4">
+                    <span className="text-gray-700">Dentist:</span>
+                    <input
+                        type="text"
+                        name="dentist"
+                        placeholder="Enter dentist name"
+                        onChange={handleChange}
+                        className="w-full mt-2 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                    />
+                </label>
+                <label className="block mb-4">
+                    <span className="text-gray-700">Service:</span>
+                    <input
+                        type="text"
+                        name="service"
+                        placeholder="Enter service"
+                        onChange={handleChange}
+                        className="w-full mt-2 p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                    />
+                </label>
+                <button
+                    type="submit"
+                    className="w-full px-4 py-2 mt-4 bg-blue-500 text-white rounded cursor-pointer hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue"
+                >
+                    Submit
+                </button>
+            </form>
+        </div>
     );
 };
 
